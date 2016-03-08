@@ -5,7 +5,7 @@ import (
 )
 
 type job interface {
-	String() string
+	String() (string, error)
 }
 
 type jobV1 struct {
