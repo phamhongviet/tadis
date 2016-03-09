@@ -49,7 +49,7 @@ func TestResqueGetFullQueueName(test *testing.T) {
 
 	if queue != "resque:queue:test" {
 		test.Errorf("Failed to get full queue name")
-		}
+	}
 }
 
 func redisTestServerAddress() string {
