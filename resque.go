@@ -34,3 +34,8 @@ func (res *resque) Enqueue(j job) error {
 	reply := res.client.Cmd("RPUSH", queue, jobString)
 	return reply.Err
 }
+
+func (res *resque) getFullQueueName() string {
+	return res.Namespace + ":queue:" + res.Queue
+
+}

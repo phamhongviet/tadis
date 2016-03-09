@@ -38,6 +38,20 @@ func TestResqueEnqueue(test *testing.T) {
 	}
 }
 
+func TestResqueGetFullQueueName(test *testing.T) {
+	resque := resque{
+		Redis:     redisTestServerAddress(),
+		Namespace: "resque",
+		Queue:     "test",
+	}
+
+	queue := resque.getFullQueueName()
+
+	if queue != "resque:queue:test" {
+		test.Errorf("Failed to get full queue name")
+		}
+}
+
 func redisTestServerAddress() string {
 	return os.Getenv("REDIS_PORT_6379_TCP_ADDR") + ":" + os.Getenv("REDIS_PORT_6379_TCP_PORT")
 }
