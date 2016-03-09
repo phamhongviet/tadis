@@ -27,7 +27,7 @@ func TestResqueEnqueue(test *testing.T) {
 	}
 
 	queue := resque.Namespace + ":queue:" + resque.Queue
-	reply := resque.client.Cmd("LPOP", queue)
+	reply := resque.client.Cmd("RPOP", queue)
 	if reply.Err != nil {
 		test.Errorf("Failed to get enqueued job: %s", err.Error())
 	}
