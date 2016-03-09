@@ -19,5 +19,11 @@ func TestHandler(test *testing.T) {
 
 	class := "test"
 
-	handler(recorder, request, class)
+	resque := resque{
+		Redis:     redisTestServerAddress(),
+		Namespace: "resque",
+		Queue:     "test",
+	}
+
+	handler(recorder, request, &resque, class)
 }
