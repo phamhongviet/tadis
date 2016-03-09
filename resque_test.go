@@ -25,9 +25,21 @@ func TestResqueEnqueue(test *testing.T) {
 	if err != nil {
 		test.Errorf("Failed to connect to redis: %s", err.Error())
 	}
+
 	err = resque.Enqueue(j)
 	if err != nil {
 		test.Errorf("Failed to enqueue: %s", err.Error())
+	}
+
+	queue := resque.Namespace + ":queue:" + resque.Queue
+	reply := resque.client.Cmd("LPOP", queue)
+	if reply.Err != nil {
+		test.Errorf("Failed to get enqueued job: %s", err.Error())
+	}
+
+	jobString, _ := j.String()
+	if reply.String() != jobString {
+		test.Errorf("Jobs' strings in resque are mismatched")
 	}
 }
 
