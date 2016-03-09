@@ -1,5 +1,5 @@
 package main
 
 type enqueuer interface {
-	Enqueue(*job) error
+	Enqueue(job) error
 }
