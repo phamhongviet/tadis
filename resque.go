@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/fzzy/radix/redis"
 )
 
@@ -17,6 +19,11 @@ func (res *resque) Dial() (err error) {
 }
 
 func (res *resque) Enqueue(j job) error {
+	err := res.Dial()
+	if err != nil {
+		fmt.Printf("Failed to connect to redis: %s", err.Error())
+	}
+
 	queue := res.Namespace + ":queue:" + res.Queue
 
 	jobString, err := j.String()

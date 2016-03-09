@@ -21,12 +21,7 @@ func TestResqueEnqueue(test *testing.T) {
 		Queue:     "test",
 	}
 
-	err := resque.Dial()
-	if err != nil {
-		test.Errorf("Failed to connect to redis: %s", err.Error())
-	}
-
-	err = resque.Enqueue(j)
+	err := resque.Enqueue(j)
 	if err != nil {
 		test.Errorf("Failed to enqueue: %s", err.Error())
 	}
