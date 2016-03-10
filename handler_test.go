@@ -19,11 +19,24 @@ func TestHandler(test *testing.T) {
 
 	class := "test"
 
-	resque := resque{
+	resque := &resque{
 		Redis:     redisTestServerAddress(),
 		Namespace: "resque",
 		Queue:     "test",
 	}
 
-	handler(recorder, request, &resque, class)
+	handler(recorder, request, resque, class)
+
+	err = resque.Dial()
+	if err != nil {
+		test.Errorf("Failed to connect to redis: %s", err.Error())
+	}
+
+	reply := resque.client.Cmd("RPOP", resque.getFullQueueName())
+	if reply.Err != nil {
+		test.Errorf("Failed to get data from redis: %s", err.Error())
+	}
+	if reply.String() != `{"class":"test","args":["a=1","b=2","c=3"]}` {
+		test.Errorf("Enqueued job and data in redis mismatched")
+	}
 }
