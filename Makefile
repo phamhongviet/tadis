@@ -11,6 +11,9 @@ setup-test:
 test: setup-test
 	docker run --rm -v $(GOPATH):/go -v $(PWD):/app -w /app --link $(REDIS_TEST_NAME):redis $(GOLANG_IMAGE) go test
 
+build:
+	docker run --rm -v $(GOPATH):/go -v $(PWD):/app -w /app $(GOLANG_IMAGE) go build -o tadis
+
 clean:
 	docker stop $(REDIS_TEST_NAME)
 	docker rm $(REDIS_TEST_NAME)
