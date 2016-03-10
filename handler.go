@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 func handler(writer http.ResponseWriter, request *http.Request, queue enqueuer, class string) {
