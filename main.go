@@ -20,10 +20,12 @@ func main() {
 		Namespace: defaultRedisNameSpace,
 		Queue:     defaultQueue,
 	}
+	resque.Init()
 
 	http.HandleFunc(defaultURL, func(writer http.ResponseWriter, request *http.Request) {
 		handler(writer, request, resque, defaultClass)
 	})
+
 	err := http.ListenAndServe(":"+defaultPort, nil)
 	if err != nil {
 		fmt.Println(err.Error())
