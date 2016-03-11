@@ -37,7 +37,7 @@ func (res *resque) Enqueue(j job) (err error) {
 		}
 	}
 
-	queue := res.Namespace + ":queue:" + res.Queue
+	queue := res.getFullQueueName()
 
 	jobString, err := j.String()
 	if err != nil {
