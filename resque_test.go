@@ -5,6 +5,30 @@ import (
 	"testing"
 )
 
+func TestResqueInit(test *testing.T) {
+	resque := resque{
+		Redis:     redisTestServerAddress(),
+		Namespace: "resque",
+		Queue:     "test",
+	}
+
+	resque.Init()
+
+	if resque.client == nil {
+		test.Errorf("Resque is not connected")
+	}
+
+	reply := resque.client.Cmd("SMEMBERS", resque.Namespace+":queues")
+
+	if reply.Err != nil {
+		test.Errorf("Error getting queues: %s", reply.Err.Error())
+	}
+
+	if reply.String() != "[ test ]" {
+		test.Errorf("Error registering queue")
+	}
+}
+
 func TestResqueEnqueue(test *testing.T) {
 	j := &jobV1{
 		Class: "Test",

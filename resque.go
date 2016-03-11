@@ -13,6 +13,17 @@ type resque struct {
 	Queue     string
 }
 
+func (res *resque) Init() (err error) {
+	err = res.Dial()
+	if err != nil {
+		fmt.Printf("Failed to connect to redis: %s", err.Error())
+		return err
+	}
+
+	reply := res.client.Cmd("SADD", res.Namespace+":queues", res.Queue)
+	return reply.Err
+}
+
 func (res *resque) Dial() (err error) {
 	res.client, err = redis.Dial("tcp", res.Redis)
 	return err
