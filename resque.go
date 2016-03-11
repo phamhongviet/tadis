@@ -29,10 +29,12 @@ func (res *resque) Dial() (err error) {
 	return err
 }
 
-func (res *resque) Enqueue(j job) error {
-	err := res.Dial()
-	if err != nil {
-		fmt.Printf("Failed to connect to redis: %s", err.Error())
+func (res *resque) Enqueue(j job) (err error) {
+	if res.client == nil {
+		err = res.Init()
+		if err != nil {
+			return err
+		}
 	}
 
 	queue := res.Namespace + ":queue:" + res.Queue
